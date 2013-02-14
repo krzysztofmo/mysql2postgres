@@ -1,3 +1,5 @@
+# -*- encoding : utf-8 -*-
+
 class Mysql2psql
   module Version
     MAJOR = 0

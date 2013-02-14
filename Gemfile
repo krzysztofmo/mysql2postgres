@@ -1,6 +1,7 @@
 source :rubygems
 
-gem 'rake', '~> 10.0'
+#gem 'rake', '~> 10.0'
+gem 'rake', '0.9.2.2'
 gem 'mysql-pr'
 gem 'postgres-pr'
 
@@ -12,7 +13,7 @@ platforms :jruby do
 end
 
 platforms :mri_19 do
-  gem 'pg'
+  gem 'pg', '0.14.1'
 end
 
 gem 'test-unit'

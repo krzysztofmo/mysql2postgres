@@ -1,7 +1,8 @@
+# -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{mysql-to-postgres}
-  s.version = "0.2.12"
+  s.name = %q{mysql_to_postgres}
+  s.version = "0.3.0"
 
   s.authors = ["Max Lapshin <max@maxidoors.ru>", "Anton Ageev <anton@ageev.name>", "Samuel Tribehou <cracoucax@gmail.com>", "Marco Nenciarini <marco.nenciarini@devise.it>", "James Nobis <jnobis@jnobis.controldocs.com>", "quel <github@quelrod.net>", "Holger Amann <keeney@fehu.org>", "Maxim Dobriakov <closer.main@gmail.com>", "Michael Kimsal <mgkimsal@gmail.com>", "Jacob Coby <jcoby@portallabs.com>", "Neszt Tibor <neszt@tvnetwork.hu>", "Miroslav Kratochvil <exa.exa@gmail.com>", "Paul Gallagher <gallagher.paul@gmail.com>", "Alex C Jokela <ajokela@umn.edu>"]
   s.date = %q{2010-09-19}
@@ -19,11 +20,11 @@ Gem::Specification.new do |s|
      "lib/mysql-to-postgres.rb",
      "lib/mysql2psql/config.rb",
      "lib/mysql2psql/config_base.rb",
+     "lib/mysql2psql/connection.rb",
      "lib/mysql2psql/converter.rb",
      "lib/mysql2psql/errors.rb",
      "lib/mysql2psql/mysql_reader.rb",
      "lib/mysql2psql/postgres_db_writer.rb",
-     "lib/mysql2psql/postgres_file_writer.rb",
      "lib/mysql2psql/postgres_db_writer.rb",
      "lib/mysql2psql/postgres_writer.rb",
      "lib/mysql2psql/version.rb",
@@ -41,7 +42,6 @@ Gem::Specification.new do |s|
      "test/lib/test_helper.rb",
      "test/units/config_base_test.rb",
      "test/units/config_test.rb",
-     "test/units/postgres_file_writer_test.rb"
   ]
   s.homepage = %q{https://github.com/ajokela/mysql-to-postgres}
   s.rdoc_options = ["--charset=UTF-8"]
@@ -59,7 +59,6 @@ Gem::Specification.new do |s|
      "test/lib/test_helper.rb",
      "test/units/config_base_test.rb",
      "test/units/config_test.rb",
-     "test/units/postgres_file_writer_test.rb"
   ]
 
   s.add_dependency(%q<mysql-pr>, [">= 2.9.10"])

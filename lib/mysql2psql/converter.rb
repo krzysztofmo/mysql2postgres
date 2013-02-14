@@ -1,3 +1,5 @@
+# -*- encoding : utf-8 -*-
+
 class Mysql2psql
 
   class Converter
@@ -14,6 +16,7 @@ class Mysql2psql
       @suppress_ddl = options.suppress_ddl(false)
       @force_truncate = options.force_truncate(false)
       @preserve_order = options.preserve_order(false)
+      @nullify_after_read = options.nullify({})
     end
   
     def convert
@@ -45,17 +48,17 @@ class Mysql2psql
       # end unless @suppress_data
  
       unless @suppress_data
-        
+
         tables.each do |table|
+          puts "Truncating #{table.name}"
           writer.truncate(table) if force_truncate and suppress_ddl
         end
-        
+
         tables.each do |table|
-          writer.write_contents(table, reader)
+          puts "Importing #{table.name}"
+          writer.write_contents(table, reader, @nullify_after_read[table.name] || [])
         end
-        
-        writer.inload
-        
+
       end
  
       tables.each do |table|
@@ -65,8 +68,6 @@ class Mysql2psql
         writer.write_constraints(table)
       end unless @suppress_ddl
  
-      writer.close
-
       return 0
       
     end

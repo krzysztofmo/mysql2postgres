@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 
 class Mysql2psql
   
@@ -12,5 +13,9 @@ class Mysql2psql
 	end
   class ConfigurationFileInitialized < ConfigurationError
 	end	
-	
+	class ConversionError < StandardError
+  end
+  class CopyCommandError < ConversionError
+  end
+
 end

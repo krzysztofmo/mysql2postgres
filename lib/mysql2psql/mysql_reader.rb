@@ -1,3 +1,5 @@
+# -*- encoding : utf-8 -*-
+
 require "rubygems"
 require "bundler/setup"
 
@@ -169,7 +171,7 @@ class Mysql2psql
   
     def connect
       @mysql = ::MysqlPR.connect(@host, @user, @passwd, @db, @port)
-      @mysql.query("SET NAMES utf8")
+      @mysql.charset = @collation || @encoding
       @mysql.query("SET SESSION query_cache_type = OFF")
     end
   
@@ -179,10 +181,12 @@ class Mysql2psql
     end
   
     def initialize(options)
-      @host, @user, @passwd, @db, @port, @sock, @flag = 
-        options.mysqlhostname('localhost'), options.mysqlusername, 
-        options.mysqlpassword, options.mysqldatabase, 
+      @host, @user, @passwd, @db, @encoding, @collation, @port, @sock, @flag =
+        options.mysqlhost('localhost'), options.mysqlusername,
+        options.mysqlpassword, options.mysqldatabase,
+        options.mysqlencoding('utf8'), options.mysqlcollation,
         options.mysqlport, options.mysqlsocket
+      @collation = nil if @collation == ""
       @port = 3306 if @port == ""  # for things like Amazon's RDS you don't have a port and connect fails with "" for a value
       @sock = nil if @sock == ""
       @flag = nil if @flag == ""

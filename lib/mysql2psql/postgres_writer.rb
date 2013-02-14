@@ -1,3 +1,5 @@
+# -*- encoding : utf-8 -*-
+
 require 'mysql2psql/writer'
 
 class Mysql2psql
@@ -27,7 +29,6 @@ class Mysql2psql
         "character(#{column[:length]})"
       when "varchar"
         default = default + "::character varying" if default
-  #      puts "VARCHAR: #{column.inspect}"
         "character varying(#{column[:length]})"
       
       # Integer and numeric types

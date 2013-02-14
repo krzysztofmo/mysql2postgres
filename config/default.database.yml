@@ -19,7 +19,7 @@ production: &production
   database: default_production
 
 mysql_data_source: &pii
-  hostname: localhost
+  host: localhost
   port: 3306
   username: username
   password: default
@@ -55,7 +55,3 @@ mysql2psql:
   force_truncate: false
 
   preserve_order: true
-
-  remove_dump_file: true
-  
-  report_status:  json    # false, json, xml

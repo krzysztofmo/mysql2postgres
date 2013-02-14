@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 
 class Mysql2psql
 
@@ -13,7 +14,7 @@ class Mysql2psql
       if options.has_key?('config') and options['config'].has_key?('destination') and options['config']['destination'].has_key?(environment)
       
         pg_options = Config.new(YAML::load(options['config']['destination'][environment].to_yaml))
-        @hostname, @login, @password, @database, @port = pg_options.hostname('localhost'), pg_options.username, pg_options.password, pg_options.database, pg_options.port(5432).to_s  
+        @hostname, @login, @password, @database, @port = pg_options.host('localhost'), pg_options.username, pg_options.password, pg_options.database, pg_options.port(5432).to_s
         @database, @schema = database.split(":")
       
         @adapter = pg_options.adapter("jdbcpostgresql")
@@ -44,7 +45,7 @@ class Mysql2psql
         
       else
         @jruby = false
-        
+
         @conn = PG.connect( dbname: database, user: login, password: password, host: hostname, port: port )
         
         unless conn.nil?
@@ -60,7 +61,7 @@ class Mysql2psql
     end
     
     def execute(sql)
-      
+
       if sql.match(/^COPY /) and ! is_copying
         sql.chomp!   # cHomp! cHomp!
         
@@ -74,8 +75,12 @@ class Mysql2psql
         
       elsif sql.match(/^TRUNCATE /) and ! is_copying
 
-        $stderr.puts "===> ERR: TRUNCATE is not implemented!"
-        
+        if jruby
+          @stream = copy_manager.copy_in(sql)
+        else
+          conn.exec( sql )
+        end
+
       elsif sql.match(/^ALTER /) and ! is_copying
         
         $stderr.puts "===> ERR: ALTER is not implemented!"
@@ -90,6 +95,11 @@ class Mysql2psql
             stream.end_copy
           else
             conn.put_copy_end
+            while res = conn.get_result
+              unless res.res_status(res.result_status) == 'PGRES_COMMAND_OK'
+                raise Mysql2psql::CopyCommandError.new "Error while executing COPY command: #{res.error_field( PG::Result::PG_DIAG_MESSAGE_PRIMARY )} #{res.error_field( PG::Result::PG_DIAG_MESSAGE_DETAIL )}"
+              end
+            end
           end
           
         else
@@ -105,7 +115,7 @@ class Mysql2psql
           else
             
             begin
-              
+
               until conn.put_copy_data( sql )
                 $stderr.puts "  waiting for connection to be writable..."
                 sleep 0.1

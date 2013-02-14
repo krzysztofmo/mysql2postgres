@@ -28,14 +28,6 @@ rescue
   raise StandardError.new("Failed to initialize integration test db. See README for setup requirements.")  
 end
 
-def get_test_file_writer(options)
-  require 'mysql2psql/postgres_file_writer'
-  Mysql2psql::PostgresFileWriter.new(options.destfile)
-rescue => e
-  puts e.inspect
-  raise StandardError.new("Failed to initialize file writer from #{options.inspect}. See README for setup requirements.")
-end
-
 def get_test_converter(options)
   require 'mysql2psql/converter'
   reader=get_test_reader(options)
