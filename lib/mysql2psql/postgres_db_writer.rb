@@ -8,6 +8,9 @@ class Mysql2psql
 class PostgresDbWriter < PostgresWriter
   attr_reader :connection
 
+  BATCH_SIZE = 1000
+  REPORT_INTERVAL_IN_SECONDS = 10
+
   def initialize(options)
     @connection = Connection.new(options)
 
@@ -127,21 +130,31 @@ EOF
   end
   
   def write_contents(table, reader, columns_to_nullify_after_read = [])
+    @row_count = table.count_rows
     connection.execute("COPY \"#{table.name}\" (#{table.columns.map { |column| PGconn.quote_ident(column[:name]) }.join(", ")}) FROM stdin;")
     columns_to_nullify = table.columns.select { |column| columns_to_nullify_after_read.include?(column[:name]) }.map { |column| table.columns.index(column) }
-    reader.paginated_read(table, 1000) do |row, counter|
+    reader.paginated_read(table, BATCH_SIZE) do |row, counter|
       columns_to_nullify.each { |i| row[i] = nil }
       process_row(table, row)
       connection.execute(row.join("\t") + "\n")
+      print_info( counter )
     end
     connection.execute "\\.\n\n"
   end
 
   private
-    def execute sql
+    def execute(sql)
       io = StringIO.new sql
       while line = io.gets
         connection.execute line
+      end
+    end
+
+    def print_info(counter)
+      @start_time = @start_time || Time.now
+      if Time.now - @start_time > REPORT_INTERVAL_IN_SECONDS
+        puts "Copied #{counter} records. Done: #{(100.0*counter/@row_count).round(1)}%"
+        @start_time = Time.now
       end
     end
 

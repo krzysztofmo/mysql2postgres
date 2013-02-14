@@ -1,0 +1,22 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    mysql-pr (2.9.11)
+    pg (0.14.1)
+    postgres-pr (0.6.3)
+    rake (0.9.2.2)
+    test-unit (2.5.4)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  activerecord
+  activerecord-jdbc-adapter
+  activerecord-jdbcpostgresql-adapter
+  jdbc-postgres
+  mysql-pr
+  pg (= 0.14.1)
+  postgres-pr
+  rake (= 0.9.2.2)
+  test-unit
