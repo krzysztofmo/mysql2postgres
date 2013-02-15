@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{mysql_to_postgres}
-  s.version = "0.3.1"
+  s.version = "0.3.2"
 
   s.authors = ["Max Lapshin <max@maxidoors.ru>", "Anton Ageev <anton@ageev.name>", "Samuel Tribehou <cracoucax@gmail.com>", "Marco Nenciarini <marco.nenciarini@devise.it>", "James Nobis <jnobis@jnobis.controldocs.com>", "quel <github@quelrod.net>", "Holger Amann <keeney@fehu.org>", "Maxim Dobriakov <closer.main@gmail.com>", "Michael Kimsal <mgkimsal@gmail.com>", "Jacob Coby <jcoby@portallabs.com>", "Neszt Tibor <neszt@tvnetwork.hu>", "Miroslav Kratochvil <exa.exa@gmail.com>", "Paul Gallagher <gallagher.paul@gmail.com>", "Alex C Jokela <ajokela@umn.edu>"]
   s.date = %q{2010-09-19}

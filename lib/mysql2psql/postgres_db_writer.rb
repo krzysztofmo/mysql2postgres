@@ -153,7 +153,7 @@ EOF
     def print_info(counter)
       @start_time = @start_time || Time.now
       if Time.now - @start_time > REPORT_INTERVAL_IN_SECONDS
-        puts "Copied #{counter} records. Done: #{(100.0*counter/@row_count).round(1)}%"
+        Rails.logger.info "Copied #{counter} records. Done: #{(100.0*counter/@row_count).round(1)}%"
         @start_time = Time.now
       end
     end

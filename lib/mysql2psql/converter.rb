@@ -50,12 +50,12 @@ class Mysql2psql
       unless @suppress_data
 
         tables.each do |table|
-          puts "Truncating #{table.name}"
+          Rails.logger.info "Truncating #{table.name}"
           writer.truncate(table) if force_truncate and suppress_ddl
         end
 
         tables.each do |table|
-          puts "Importing #{table.name}"
+          Rails.logger.info "Importing #{table.name}"
           writer.write_contents(table, reader, @nullify_after_read[table.name] || [])
         end
 

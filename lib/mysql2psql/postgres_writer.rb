@@ -99,7 +99,7 @@ class Mysql2psql
         max_enum_size = enum.split(',').map{ |check| check.size() -2}.sort[-1]
         "character varying(#{max_enum_size}) check( #{column[:name]} in (#{enum}))"
       else
-        puts "Unknown #{column.inspect}"
+        Rails.logger.info "Unknown #{column.inspect}"
         column[:type].inspect
         return ""
       end
